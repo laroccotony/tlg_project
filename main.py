@@ -1,91 +1,74 @@
-import tkinter as ttk
-from tkinter import messagebox
-import login  # This assumes your login.py is properly set up
-import time
+import requests
+from datetime import datetime
+# Import the login function from login.py. Make sure login.py is in the same directory.
+from login import login
+from login import login, register, user_exists  # Ensure to import the register function
 
-def show_login_window():
-    login_window = ttk.Toplevel()
-    login_window.title("Login")
+def main_menu():
+    while True:
+        choice = input("1: Login\n2: Register\nChoose an option (1 or 2): ")
+        if choice == "1":
+            username = input("Username: ")
+            if not user_exists(username):
+                print("Username does not exist. Please register first.")
+                continue
+            password = input("Password: ")
+            if login(username, password):  # Adjust the login function to accept username and password as arguments
+                return username
+            else:
+                print("Login failed. Please try again.")
+        elif choice == "2":
+            register()  # Call register function directly
+        else:
+            print("Invalid choice. Please enter 1 or 2.")
 
-    ttk.Label(login_window, text="Username:").pack()
-    username_entry = ttk.Entry(login_window)
-    username_entry.pack()
+# Placeholder functions for API interactions
+def fetch_weather_data():
+    # This function will use the OpenWeatherMap API
+    print("Fetching weather data...")
 
-    ttk.Label(login_window, text="Password:").pack()
-    password_entry = ttk.Entry(login_window, show="*")
-    password_entry.pack()
+def get_random_cat_image():
+    # This function will use The Cat API
+    print("Fetching a random cat image...")
 
-    ttk.Button(login_window, text="Login",
-              command=lambda: attempt_login(username_entry.get(), password_entry.get(), login_window)).pack()
+def retrieve_country_data():
+    # This function will use the REST Countries API
+    print("Retrieving country data...")
 
-    ttk.Button(login_window, text="Register",
-              command=lambda: attempt_registration(username_entry.get(), password_entry.get(), login_window)).pack()
+def geolocate_ip_address():
+    # This function will use the IP Geolocation API
+    print("Geolocating IP address...")
 
-def attempt_login(username, password, window):
-    if login.login(username, password):
-        messagebox.showinfo("Login Success", "You are now logged in!")
-        window.destroy()  # Close the login window
-        show_main_application_window()  # Function to create your main app window
-    else:
-        messagebox.showerror("Login Failed", "Incorrect username or password.")
+def display_menu(username):
+    print(f"\nWelcome {username}, the current system time and date is: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    while True:
+        print("""
+1. Fetch Weather Data
+2. Get Random Cat Images
+3. Country Data
+4. Geolocate IP Addresses
+5. Logout
+        """)
+        choice = input("Enter your choice (1-5): ")
+        if choice == "1":
+            fetch_weather_data()
+        elif choice == "2":
+            get_random_cat_image()
+        elif choice == "3":
+            retrieve_country_data()
+        elif choice == "4":
+            geolocate_ip_address()
+        elif choice == "5":
+            print("Logging out...")
+            return  # Return to the main loop, allowing the user to see the main menu again
+        else:
+            print("Invalid choice. Please enter a number between 1-5.")
 
-def attempt_registration(username, password, window):
-    if login.register(username, password):
-        messagebox.showinfo("Registration Success", "You are now registered and can log in.")
-        #window.destroy()  # Optionally close the login window, or prompt to log in now
-    else:
-        messagebox.showerror("Registration Failed", "This username is already taken.")
-
-def show_main_application_window():
-
-# Function to update the time
-    def update_time():
-        current_time = time.strftime('%Y-%m-%d %H:%M:%S')
-        time_label.config(text=current_time)
-        root.after(1000, update_time)  # Update the time every second
-
-    # Main application window
-        root = ttk.Tk()
-        root.title("My Python App")
-
-        # Configure the grid layout
-        root.columnconfigure(0, weight=1)
-        root.rowconfigure(0, weight=1)
-
-        # Frame for the main window
-        main_frame = ttk.Frame(root, padding="30 30 30 30")
-        main_frame.grid(column=0, row=0, sticky=(ttk.W, ttk.E, ttk.N, ttk.S))
-
-        # Time and Date
-        time_label = ttk.Label(main_frame, text="", font=("Helvetica", 16))
-        time_label.grid(column=0, row=0, sticky=ttk.W)
-
-        # Username Display
-        username_label = ttk.Label(main_frame, text="Username", font=("Helvetica", 20))
-        username_label.grid(column=1, row=1)
-
-        # Logout Button
-        logout_button = ttk.Button(main_frame, text="Logout")
-        logout_button.grid(column=2, row=0, sticky=ttk.E)
-
-        # Adjust the spacing
-        main_frame.columnconfigure(0, weight=1)
-        main_frame.columnconfigure(1, weight=3)
-        main_frame.columnconfigure(2, weight=1)
-        main_frame.rowconfigure(1, weight=1)
-
-        # Start the time update loop
-        update_time()
-
-        # Start the GUI
-        root.mainloop()
-
-
-
-# Initialize the main application (this could also be your initial login or registration window)
 if __name__ == "__main__":
-    root = ttk.Tk()
-    root.withdraw()  # Hide the main window (use show_login_window to show the login interface instead)
-    show_login_window()
-    root.mainloop()
+    while True:  # This loop allows for re-displaying the main menu after logging out
+        user_name = main_menu()
+        if user_name:
+            display_menu(user_name)
+        else:
+            break  # Exit the program if main_menu() returns None or a similar condition indicating to stop
 
