@@ -79,6 +79,8 @@ def retrieve_country_data():
         print(f"\033[33mRegion\033[0m: {region}")
         print(f"\033[33mSubregion\033[0m: {subregion}")
         print(f"\033[33mCoat of Arms\033[0m: {coatOfArms}")
+        if isinstance(languages, dict):
+            languages = list(languages.values())
         print(f"\033[33mLanguages\033[0m: {', '.join(languages)}")
         print(f"\033[33mGoogle Maps\033[0m: {maps}")
     
