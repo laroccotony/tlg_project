@@ -77,6 +77,17 @@ def main():
             print("Invalid option, please choose 1 or 2.")
 
 # main.py corrected bottom part
+def main_menu():
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+    if login(username, password):
+        return username
+    return None
+
+def display_menu(username):
+    print(f"Welcome, {username}!")
+    # Add menu options and logic here
+
 if __name__ == "__main__":
     user_name = main_menu()  # This replaces the direct call to login() with the main_menu function.
     if user_name:
