@@ -3,7 +3,10 @@ import os
 
 # Hash a password
 def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
+    salt = os.urandom(16)  # Generate a random salt
+    password = password.encode()  # Convert password to bytes
+    hashed_password = hashlib.pbkdf2_hmac('sha256', password, salt, 100000)
+    return salt.hex() + hashed_password.hex()
 
 def register():
     username = input("Enter a new username: ")
