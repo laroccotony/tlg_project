@@ -36,10 +36,9 @@ def fetch_weather_data():
         weather_data = response.json()
         temp = weather_data['main']['temp']
         weather_description = weather_data['weather'][0]['description']
-        print(f"\nThe weather in {cyan(city)} is: {temp}°C, {weather_description}.")
+        print(f"\nThe weather in {cyan(city)} is: {cyan(temp)}°C, {cyan(weather_description)}.")
     except requests.RequestException as e:
         print("Error fetching weather data:", e)
-
 
 def get_random_cat_image():
     api_key = cat_image
@@ -64,17 +63,25 @@ def retrieve_country_data():
     try:
         response = requests.get(url)
         response.raise_for_status()
-        country_data = response.json()
+        country_data = response.json() 
         country_info = country_data[0]
         capital = country_info['capital'][0] if 'capital' in country_info else 'No capital'
         population = country_info['population']
         region = country_info['region']
+        coatOfArms = country_info['flags']['png'] if 'flags' in country_info else 'No coat of arms'
+        languages = country_info['languages'] if 'languages' in country_info else 'No languages'
         subregion = country_info['subregion'] if 'subregion' in country_info else 'No subregion'
+        maps = country_info['maps']['googleMaps'] if 'maps' in country_info else 'No maps'
+
         print(f"\033[33mCountry\033[0m: {country_name}")
         print(f"\033[33mCapital\033[0m: {capital}")
         print(f"\033[33mPopulation\033[0m: {population}")
         print(f"\033[33mRegion\033[0m: {region}")
         print(f"\033[33mSubregion\033[0m: {subregion}")
+        print(f"\033[33mCoat of Arms\033[0m: {coatOfArms}")
+        print(f"\033[33mLanguages\033[0m: {', '.join(languages)}")
+        print(f"\033[33mGoogle Maps\033[0m: {maps}")
+    
     except requests.RequestException as e:
         print("Error fetching country data:", e)
 
