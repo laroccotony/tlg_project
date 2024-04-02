@@ -1,8 +1,7 @@
 import requests
 from datetime import datetime
-# Import the login function from login.py. Make sure login.py is in the same directory.
 from login import login
-from login import login, register, user_exists  # Ensure to import the register function
+from login import login, register, user_exists
 from api_keys import weather, cat_image  # Import the API keys from api_keys.py
 
 def main_menu():
@@ -37,7 +36,7 @@ def fetch_weather_data():
         # Extract and print some data
         temp = weather_data['main']['temp']
         weather_description = weather_data['weather'][0]['description']
-        print(f"Weather in {city}: {temp}°C, {weather_description}.")
+        print(f"\nThe weather in {city} is: {temp}°C, {weather_description}.")
     except requests.RequestException as e:
         print("Error fetching weather data:", e)
 
@@ -105,7 +104,7 @@ def geolocate_ip_address():
         print("Error fetching IP geolocation data:", e)
 
 def display_menu(username):
-    print(f"\nWelcome {username}, the current system time and date is: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"\nWelcome {username}, the current system time and date is: {datetime.now().strftime('%m-%d-%Y %H:%M:%S')}")
     while True:
         print("""
 1. Fetch Weather Data

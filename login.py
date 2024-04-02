@@ -5,19 +5,6 @@ import os
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-# ASCII Art for the application
-def display_art(text):
-    if text == "welcome":
-        print("""
-  __        __   _          
-  \ \      / /__| | ___ ___  _ __ ___   ___   
-   \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \ / _ \ 
-    \ V  V /  __/ | (_| (_) | | | | | |  __/ 
-     \_/\_/ \___|_|\___\___/|_| |_| |_|\___|
-                                                                           
-        """)
-
-# Register a new user
 def register():
     username = input("Enter a new username: ")
     if user_exists(username):
@@ -57,7 +44,6 @@ def login(username, password):
             for line in file:
                 stored_username, stored_hashed_password = line.strip().split(",")
                 if stored_username == username and stored_hashed_password == hashed_password:
-                    print(f"Welcome back, {username}!")
                     return True
     print("Invalid username or password.")
     return False
@@ -65,7 +51,6 @@ def login(username, password):
 
 # Main CLI
 def main():
-    display_art
     while True:
         choice = input("1: Register\n2: Login\nChoose an option (1 or 2): ")
         if choice == "1":
@@ -85,7 +70,7 @@ def main_menu():
     return None
 
 def display_menu(username):
-    print(f"Welcome, {username}!")
+    print(f"\nWelcome, {username}!")
     # Add menu options and logic here
 
 if __name__ == "__main__":
