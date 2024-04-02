@@ -20,7 +20,6 @@ def display_art(text):
 # Register a new user
 def register():
     username = input("Enter a new username: ")
-    display_art()
     if user_exists(username):
         print("Error: This username already exists. Please choose a different username.")
         return  # Exit the function if the user exists
@@ -66,7 +65,7 @@ def login(username, password):
 
 # Main CLI
 def main():
-    display_art("welcome")
+    display_art
     while True:
         choice = input("1: Register\n2: Login\nChoose an option (1 or 2): ")
         if choice == "1":

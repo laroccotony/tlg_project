@@ -3,6 +3,7 @@ from datetime import datetime
 # Import the login function from login.py. Make sure login.py is in the same directory.
 from login import login
 from login import login, register, user_exists  # Ensure to import the register function
+from api_keys import weather, cat_image  # Import the API keys from api_keys.py
 
 def main_menu():
     while True:
@@ -25,7 +26,7 @@ def main_menu():
 # Placeholder functions for API interactions
 def fetch_weather_data():
     city = input("Enter the city name: ")
-    api_key = "5643450b393b6370c42a23b189715aba"  # Replace with your actual OpenWeatherMap API key
+    api_key = weather
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
 
     try:
@@ -42,7 +43,7 @@ def fetch_weather_data():
 
 
 def get_random_cat_image():
-    api_key = "live_X0BZo5UefOAxA2ONfc54iic4CDfubQUfF2HzHIhpaU9rrquoDhyTkb1UdNzcnupk"  # Replace with your actual The Cat API key
+    api_key = cat_image
     url = "https://api.thecatapi.com/v1/images/search"
     headers = {"x-api-key": api_key}  # The Cat API requires the API key in the request header
 
