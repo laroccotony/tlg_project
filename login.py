@@ -9,7 +9,7 @@ def register():
     username = input("Enter a new username: ")
     if user_exists(username):
         print("Error: This username already exists. Please choose a different username.")
-        return  # Exit the function if the user exists
+        return
 
     password = input("Enter a new password: ")
     hashed_password = hash_password(password)
@@ -18,7 +18,6 @@ def register():
         file.write(f"{username},{hashed_password}\n")
     print("Registration successful.")
 
-# Add a function to check if a user already exists
 def user_exists(username):
     if os.path.exists("user_credentials.txt"):
         with open("user_credentials.txt", "r") as file:
@@ -28,15 +27,8 @@ def user_exists(username):
                     return True
     return False
 
-# Adjust the login function to only handle logging in
-# and potentially move registration logic to its function if mixed.
-
-# Other parts of login.py remain the same
-
-# Login existing user
-# Adjusted login function in login.py
 def login(username, password):
-    # Assuming you have a hash_password function as before
+
     hashed_password = hash_password(password)
 
     if os.path.exists("user_credentials.txt"):
@@ -48,8 +40,6 @@ def login(username, password):
     print("Invalid username or password.")
     return False
 
-
-# Main CLI
 def main():
     while True:
         choice = input("1: Register\n2: Login\nChoose an option (1 or 2): ")
@@ -61,7 +51,7 @@ def main():
         else:
             print("Invalid option, please choose 1 or 2.")
 
-# main.py corrected bottom part
+
 def main_menu():
     username = input("Enter your username: ")
     password = input("Enter your password: ")
@@ -71,10 +61,9 @@ def main_menu():
 
 def display_menu(username):
     print(f"\nWelcome, {username}!")
-    # Add menu options and logic here
 
 if __name__ == "__main__":
-    user_name = main_menu()  # This replaces the direct call to login() with the main_menu function.
+    user_name = main_menu()
     if user_name:
         display_menu(user_name)
 

@@ -1,28 +1,30 @@
-import requests
 from datetime import datetime
-from login import login
+from crayons import cyan, magenta
+import requests
+from api_keys import weather, cat_image
 from login import login, register, user_exists
-from api_keys import weather, cat_image  # Import the API keys from api_keys.py
 
 def main_menu():
     while True:
-        choice = input("1: Login\n2: Register\nChoose an option (1 or 2): ")
+        choice = input("1: Login\n2: Register\nQ: Quit\nChoose an option (1 or 2): ")
         if choice == "1":
             username = input("Username: ")
             if not user_exists(username):
                 print("Username does not exist. Please register first.")
                 continue
             password = input("Password: ")
-            if login(username, password):  # Adjust the login function to accept username and password as arguments
+            if login(username, password):
                 return username
             else:
                 print("Login failed. Please try again.")
         elif choice == "2":
-            register()  # Call register function directly
+            register()
+        elif choice.lower() == "q":
+            print("Exiting program...")
+            return None
         else:
             print("Invalid choice. Please enter 1 or 2.")
 
-# Placeholder functions for API interactions
 def fetch_weather_data():
     city = input("Enter the city name: ")
     api_key = weather
@@ -30,13 +32,11 @@ def fetch_weather_data():
 
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Raises an HTTPError if the response status code is 4XX/5XX
+        response.raise_for_status()
         weather_data = response.json()
-
-        # Extract and print some data
         temp = weather_data['main']['temp']
         weather_description = weather_data['weather'][0]['description']
-        print(f"\nThe weather in {city} is: {temp}°C, {weather_description}.")
+        print(f"\nThe weather in {cyan(city)} is: {temp}°C, {weather_description}.")
     except requests.RequestException as e:
         print("Error fetching weather data:", e)
 
@@ -44,62 +44,57 @@ def fetch_weather_data():
 def get_random_cat_image():
     api_key = cat_image
     url = "https://api.thecatapi.com/v1/images/search"
-    headers = {"x-api-key": api_key}  # The Cat API requires the API key in the request header
+    headers = {"x-api-key": api_key}
 
     try:
         response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Raises an HTTPError if the response status code is 4XX/5XX
+        response.raise_for_status()
         cat_data = response.json()
 
-        # Extract and print the image URL
         cat_image_url = cat_data[0]['url']
-        print(f"Random Cat Image URL: {cat_image_url}")
+        print(f"Random Cat Image URL: {magenta(cat_image_url)}")
         print("Copy and paste the URL into your browser to view the image.")
     except requests.RequestException as e:
         print("Error fetching cat image:", e)
 
 def retrieve_country_data():
-    country_name = input("Enter the country name: ")
+    country_name = input("\nEnter the country name: ")
     url = f"https://restcountries.com/v3.1/name/{country_name}"
 
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Raises an HTTPError if the response status code is 4XX/5XX
+        response.raise_for_status()
         country_data = response.json()
-
-        # Extract and print some country data
         country_info = country_data[0]
         capital = country_info['capital'][0] if 'capital' in country_info else 'No capital'
         population = country_info['population']
         region = country_info['region']
         subregion = country_info['subregion'] if 'subregion' in country_info else 'No subregion'
-        print(f"Country: {country_name}")
-        print(f"Capital: {capital}")
-        print(f"Population: {population}")
-        print(f"Region: {region}")
-        print(f"Subregion: {subregion}")
+        print(f"\033[33mCountry\033[0m: {country_name}")
+        print(f"\033[33mCapital\033[0m: {capital}")
+        print(f"\033[33mPopulation\033[0m: {population}")
+        print(f"\033[33mRegion\033[0m: {region}")
+        print(f"\033[33mSubregion\033[0m: {subregion}")
     except requests.RequestException as e:
         print("Error fetching country data:", e)
 
 def geolocate_ip_address():
-    ip_address = input("Enter the IP address: ")
+    ip_address = input("\nEnter the IP address: ")
     url = f"https://ipapi.co/{ip_address}/json/"
 
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Raises an HTTPError if the response status code is 4XX/5XX
+        response.raise_for_status()
         ip_data = response.json()
-
-        # Extract and print some geolocation data
         city = ip_data.get('city', 'Not available')
         region = ip_data.get('region', 'Not available')
         country = ip_data.get('country_name', 'Not available')
         isp = ip_data.get('org', 'Not available')
-        print(f"IP Address: {ip_address}")
-        print(f"City: {city}")
-        print(f"Region: {region}")
-        print(f"Country: {country}")
-        print(f"ISP: {isp}")
+        print(f"\033[32mIP Address\033[0m: {ip_address}")
+        print(f"\033[32mCity\033[0m: {city}")
+        print(f"\033[32mRegion\033[0m: {region}")
+        print(f"\033[32mCountry\033[0m: {country}")
+        print(f"\033[32mISP\033[0m: {isp}")
     except requests.RequestException as e:
         print("Error fetching IP geolocation data:", e)
 
@@ -124,15 +119,14 @@ def display_menu(username):
             geolocate_ip_address()
         elif choice == "5":
             print("Logging out...")
-            return  # Return to the main loop, allowing the user to see the main menu again
+            return
         else:
             print("Invalid choice. Please enter a number between 1-5.")
 
 if __name__ == "__main__":
-    while True:  # This loop allows for re-displaying the main menu after logging out
+    while True:
         user_name = main_menu()
         if user_name:
             display_menu(user_name)
         else:
-            break  # Exit the program if main_menu() returns None or a similar condition indicating to stop
-
+            break
