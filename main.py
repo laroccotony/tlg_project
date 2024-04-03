@@ -129,6 +129,9 @@ def display_menu(username):
         elif choice == "5":
             print("Logging out...")
             return
+        elif choice.lower() == "q":
+            print("Exiting program...")
+            exit()
         else:
             print("Invalid choice. Please enter a number between 1-5.")
 
