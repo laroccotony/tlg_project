@@ -116,6 +116,7 @@ def display_menu(username):
 3. Country Data
 4. Geolocate IP Addresses
 5. Logout
+5. Q: Quit
         """)
         choice = input("Enter your choice (1-5): ")
         if choice == "1":
