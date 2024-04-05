@@ -6,7 +6,7 @@ from login import login, register, user_exists
 
 def main_menu():
     while True:
-        choice = input("1: Login\n2: Register\nQ: Quit\nChoose an option (1 or 2): ")
+        choice = input("1: Login\n2: Register\nQ: Quit\nChoose an option (1 or 2 or Q): ")
         if choice == "1":
             username = input("Username: ")
             if not user_exists(username):
@@ -138,11 +138,11 @@ def movie():
         genre = movie_data['Genre']
         director = movie_data['Director']
         plot = movie_data['Plot']
-        print(f"\nTitle: {title}")
-        print(f"Year: {year}")
-        print(f"Genre: {genre}")
-        print(f"Director: {director}")
-        print(f"Plot: {plot}")
+        print(f"\033\n[35mTitle:\033[0m {title}")
+        print(f"\033[35mYear:\033[0m {year}")
+        print(f"\033[35mGenre:\033[0m {genre}")
+        print(f"\033[35mDirector:\033[0m {director}")
+        print(f"\033[35mPlot:\033[0m {plot}")
     except requests.RequestException as e:
         print("Error fetching movie data:", e)
 
@@ -159,7 +159,7 @@ def display_menu(username):
 7. Logout
 8. Q: Quit
         """)
-        choice = input("Enter your choice (1-5): ")
+        choice = input("Enter your choice (1-8): ")
         if choice == "1":
             fetch_weather_data()
         elif choice == "2":
