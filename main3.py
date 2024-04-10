@@ -1,7 +1,7 @@
 from datetime import datetime
 from crayons import cyan, magenta, red, green
 import requests
-from api_keys import weather, cat_image, stocks, omdb
+from api_keys import weather, cat_image, stocks, omdb, geo
 from login import login, register, user_exists
 
 def main_menu():
@@ -108,6 +108,40 @@ def geolocate_ip_address():
     except requests.RequestException as e:
         print("\nError fetching IP geolocation data:", e)
 
+def geo_ip():
+    ip_address = input("\nEnter the IP address: \n")
+    geo_api = geo
+    url = f"https://api.ipgeolocation.io/ipgeo?apiKey={geo_api}&ip={ip_address}&output=json"
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        ip_data = response.json()
+        ip = ip_data.get('ip', 'Not available')
+        continent = ip_data.get('continent_name', 'Not available')
+        country_name = ip_data.get('country_name', 'Not available')
+        country_capital = ip_data.get('country_capital', 'Not available')
+        state_prov = ip_data.get('state_prov', 'Not available')
+        city = ip_data.get('city', 'Not available')
+        zipcode = ip_data.get('zipcode', 'Not available')
+        latitude = ip_data.get('latitude', 'Not available')
+        longitude = ip_data.get('longitude', 'Not available')
+        isp = ip_data.get('isp', 'Not available')
+
+        print(f"\033[32mIP Address\033[0m: {ip}")
+        print(f"\033[32mContinent\033[0m: {continent}")
+        print(f"\033[32mCountry Name\033[0m: {country_name}")
+        print(f"\033[32mCountry Capital\033[0m: {country_capital}")
+        print(f"\033[32mState/Province\033[0m: {state_prov}")
+        print(f"\033[32mCity\033[0m: {city}")
+        print(f"\033[32mZipcode\033[0m: {zipcode}")
+        print(f"\033[32mLatitude\033[0m: {latitude}")
+        print(f"\033[32mLongitude\033[0m: {longitude}")
+        print(f"\033[32mISP\033[0m: {isp}")
+
+    except requests.RequestException as e:
+        print("\nError fetching IP geolocation data:", e)
+
 def stock_data():
     ticker = input("Enter the stock ticker: ")
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={ticker}&interval=5min&apikey={stocks}"
@@ -178,7 +212,7 @@ def display_menu(username):
         elif choice == "3":
             retrieve_country_data()
         elif choice == "4":
-            geolocate_ip_address()
+            geo_ip()
         elif choice == "5":
             stock_data()
         elif choice == "6":

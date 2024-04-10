@@ -8,7 +8,7 @@ def hash_password(password):
 def register():
     username = input("Enter a new username: ")
     if user_exists(username):
-        print("Error: This username already exists. Please choose a different username.")
+        print("\033[91m\nError: This username already exists. Please choose a different username.\033[0m\n")
         return
 
     password = input("Enter a new password: ")
@@ -16,7 +16,7 @@ def register():
 
     with open("user_credentials.txt", "a") as file:
         file.write(f"{username},{hashed_password}\n")
-    print("Registration successful.")
+    print("\033[92m\nRegistration successful.\033[0m\n")
 
 def user_exists(username):
     if os.path.exists("user_credentials.txt"):
@@ -37,7 +37,7 @@ def login(username, password):
                 stored_username, stored_hashed_password = line.strip().split(",")
                 if stored_username == username and stored_hashed_password == hashed_password:
                     return True
-    print("Invalid username or password.")
+    print("\033[91m\nInvalid username or password.\033[0m\n")
     return False
 
 def main():
@@ -49,8 +49,7 @@ def main():
             if login():
                 break
         else:
-            print("Invalid option, please choose 1 or 2.")
-
+            print("\033[91m\nInvalid option, please choose 1 or 2.\033[0m\n")
 
 def main_menu():
     username = input("Enter your username: ")
@@ -60,7 +59,7 @@ def main_menu():
     return None
 
 def display_menu(username):
-    print(f"\nWelcome, {username}!")
+    print("\033[93m\nWelcome, {username}!\033[0m\n")
 
 if __name__ == "__main__":
     user_name = main_menu()
